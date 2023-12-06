@@ -37,6 +37,29 @@ def extract_data(line):
 
     return game
 
+def part_one(conn):
+    cursor = conn.cursor()
+
+    all_ids = set()
+    for row in cursor.execute('SELECT DISTINCT id FROM game'):
+        all_ids.add(row['id'])
+
+    illegals = set()
+    for row in cursor.execute('SELECT id FROM game WHERE red > 13 OR blue > 14 OR green > 13'):
+        illegals.add(row['id'])
+
+    print(sum(all_ids - illegals))
+
+def part_two(conn):
+    cursor = conn.cursor()
+
+    game_power = []
+    for row in cursor.execute('SELECT MAX(red), MAX(blue), MAX(green) FROM game GROUP BY id'):
+        game_power.append(row['MAX(red)'] * row['MAX(blue)'] * row['MAX(green)'])
+
+    print(sum(game_power))
+
+
 if __name__ == '__main__':
     connection = sqlite3.connect(':memory:')
     connection.row_factory = sqlite3.Row
@@ -51,14 +74,7 @@ if __name__ == '__main__':
     cursor.executemany('INSERT INTO game VALUES (?, ?, ?, ?)', data)
     connection.commit()
 
-    all_ids = set()
-    for row in cursor.execute('SELECT DISTINCT id FROM game'):
-        all_ids.add(row['id'])
-
-    illegals = set()
-    for row in cursor.execute('SELECT id FROM game WHERE red > 13 OR blue > 14 OR green > 13'):
-        illegals.add(row['id'])
-
-    print(sum(all_ids - illegals))
+    #part_one(connection)
+    part_two(connection)
 
     connection.close()
