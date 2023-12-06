@@ -19,7 +19,7 @@ def to_int(num):
 def trim_to_num(line):
     first = FIRST_DIGIT.search(line)
     last = LAST_DIGIT.search(line)
-    
+
     # test.txt has 'one' as a test case, but it won't match in part one. Avoid failing there.
     if first is None:
         return 0
@@ -32,6 +32,6 @@ def trim_to_num(line):
 if __name__ == '__main__':
     with open('./input.txt') as inputfile:
         nums = [ trim_to_num(line) for line in inputfile ]
-        print(sum(nums)) 
+        print(sum(nums))
         # test.txt gives  14+43+68+55+56+33+0 = 269 for part 1
-        # test.txt gives  14+23+69+46+56+33+11 = 252 for part 1
+        # test.txt gives  14+23+69+46+56+33+11 = 252 for part 2
